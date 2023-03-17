@@ -7,16 +7,19 @@ import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;
 import org.springframework.batch.item.file.transform.DelimitedLineAggregator;
 import org.springframework.batch.item.file.transform.LineAggregator;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FileRequestWriter {
 
+    private Resource outputResource = new FileSystemResource("src\\main\\resources\\csv\\output.csv");
+
     public FlatFileItemWriter<Student> write(){
         return new FlatFileItemWriterBuilder<Student>()
                 .name("csv-writer")
                 .append(false)
-                .resource(new FileSystemResource("src\\main\\resources\\csv\\output.csv"))
+                .resource(outputResource)
                 .lineAggregator(lineAggregator())
                 .build();
     }

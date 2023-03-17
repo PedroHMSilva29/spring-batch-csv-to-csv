@@ -15,6 +15,7 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
+import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,13 +25,13 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfiguration {
 
     @Autowired
+    JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
     StepBuilderFactory stepBuilderFactory;
 
     @Autowired
     FileRequestReader fileReader;
-
-    //@Autowired
-    //StudentProcessor processor;
 
     @Autowired
     FileRequestWriter fileWriter;
@@ -40,7 +41,7 @@ public class JobConfiguration {
 
     @Bean
     @StepScope
-    public FlatFileItemReader<Student> fileReader() {
+    public MultiResourceItemReader<Student> fileReader() {
         return fileReader.read();
     }
 
@@ -88,9 +89,6 @@ public class JobConfiguration {
                 .tasklet(s3BucketWriter())
                 .build();
     }
-
-    @Autowired
-    JobBuilderFactory jobBuilderFactory;
 
     @Bean
     public Job mainJob() {
