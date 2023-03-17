@@ -1,5 +1,6 @@
 package br.com.pehenmo.batch.writer;
 
+import br.com.pehenmo.batch.entity.ResultCSV;
 import br.com.pehenmo.batch.entity.Student;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
@@ -15,21 +16,21 @@ public class FileRequestWriter {
 
     private Resource outputResource = new FileSystemResource("src\\main\\resources\\csv\\output.csv");
 
-    public FlatFileItemWriter<Student> write(){
-        return new FlatFileItemWriterBuilder<Student>()
+    public FlatFileItemWriter<ResultCSV> write(){
+        return new FlatFileItemWriterBuilder<ResultCSV>()
                 .name("csv-writer")
-                .append(false)
+                .append(true)
                 .resource(outputResource)
                 .lineAggregator(lineAggregator())
                 .build();
     }
 
-    private LineAggregator<Student> lineAggregator() {
+    private LineAggregator<ResultCSV> lineAggregator() {
 
-        DelimitedLineAggregator<Student> lineAggregator = new DelimitedLineAggregator<Student>();
+        DelimitedLineAggregator<ResultCSV> lineAggregator = new DelimitedLineAggregator<>();
 
-        BeanWrapperFieldExtractor<Student> fieldExtractor = new BeanWrapperFieldExtractor<Student>();
-        fieldExtractor.setNames(Student.filds());
+        BeanWrapperFieldExtractor<ResultCSV> fieldExtractor = new BeanWrapperFieldExtractor<>();
+        fieldExtractor.setNames(ResultCSV.filds());
 
         lineAggregator.setDelimiter(",");
         lineAggregator.setFieldExtractor(fieldExtractor);

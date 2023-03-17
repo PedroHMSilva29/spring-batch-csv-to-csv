@@ -1,8 +1,13 @@
 package br.com.pehenmo.batch;
 
+import br.com.pehenmo.batch.entity.ResultCSV;
 import br.com.pehenmo.batch.entity.Student;
+import br.com.pehenmo.batch.entity.Worker;
+import br.com.pehenmo.batch.listener.JobListener;
 import br.com.pehenmo.batch.processor.StudentProcessor;
-import br.com.pehenmo.batch.reader.FileRequestReader;
+import br.com.pehenmo.batch.processor.WorkerProcessor;
+import br.com.pehenmo.batch.reader.FileRequestStudantReader;
+import br.com.pehenmo.batch.reader.FileRequestWorkerReader;
 import br.com.pehenmo.batch.writer.AWSRequestWriter;
 import br.com.pehenmo.batch.writer.FileRequestWriter;
 import org.springframework.batch.core.Job;
@@ -15,7 +20,6 @@ import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.FlatFileItemWriter;
-import org.springframework.batch.item.file.MultiResourceItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,13 +29,19 @@ import org.springframework.context.annotation.Configuration;
 public class JobConfiguration {
 
     @Autowired
+    JobListener jobListener;
+
+    @Autowired
     JobBuilderFactory jobBuilderFactory;
 
     @Autowired
     StepBuilderFactory stepBuilderFactory;
 
     @Autowired
-    FileRequestReader fileReader;
+    FileRequestStudantReader fileStudantReader;
+
+    @Autowired
+    FileRequestWorkerReader fileWorkerReader;
 
     @Autowired
     FileRequestWriter fileWriter;
@@ -41,19 +51,32 @@ public class JobConfiguration {
 
     @Bean
     @StepScope
-    public MultiResourceItemReader<Student> fileReader() {
-        return fileReader.read();
+    public FlatFileItemReader<Student> fileReaderStudent() {
+        return fileStudantReader.reader();
     }
 
     @Bean
     @StepScope
-    public StudentProcessor processor() {
+    public FlatFileItemReader<Worker> fileReaderWorker() {
+        return fileWorkerReader.reader();
+    }
+
+    @Bean
+    @StepScope
+    public StudentProcessor processorStudent() {
         return new StudentProcessor();
     }
 
     @Bean
     @StepScope
-    public FlatFileItemWriter<Student> fileWriter() {
+    public WorkerProcessor processorWorker() {
+        return new WorkerProcessor();
+    }
+
+
+    @Bean
+    @StepScope
+    public FlatFileItemWriter<ResultCSV> fileWriter() {
         return fileWriter.write();
     }
 
@@ -73,11 +96,21 @@ public class JobConfiguration {
      }**/
 
     @Bean
-    public Step fileStep() {
+    public Step fileWorkerStep() {
         return stepBuilderFactory
-                .get("file-step").<Student, Student>chunk(2)
-                .reader(fileReader())
-                .processor(processor())
+                .get("file-worker-step").<Worker, ResultCSV>chunk(2)
+                .reader(fileReaderWorker())
+                .processor(processorWorker())
+                .writer(fileWriter())
+                .build();
+    }
+
+    @Bean
+    public Step fileStudentStep() {
+        return stepBuilderFactory
+                .get("file-student-step").<Student, ResultCSV>chunk(2)
+                .reader(fileReaderStudent())
+                .processor(processorStudent())
                 .writer(fileWriter())
                 .build();
     }
@@ -95,8 +128,10 @@ public class JobConfiguration {
         return jobBuilderFactory
                 .get("main-job")
                 .incrementer(new RunIdIncrementer())
-                .start(fileStep())
+                .start(fileStudentStep())
+                .next(fileWorkerStep())
                 .next(s3Step())
+                .listener(jobListener)
                 .build();
     }
 

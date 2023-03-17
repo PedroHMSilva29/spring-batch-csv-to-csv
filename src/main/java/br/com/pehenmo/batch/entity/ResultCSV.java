@@ -1,14 +1,21 @@
 package br.com.pehenmo.batch.entity;
 
-public class Worker {
+public class ResultCSV {
 
     private int id;
     private String firstName;
     private String lastName;
-    private String cnpj;
+    private String identificador;
 
     public static String[] filds(){
-        return new String[] {"id", "firstName", "lastName", "cnpj"};
+        return new String[] {"id", "firstName", "lastName", "identificador"};
+    }
+
+    public ResultCSV(int id, String firstName, String lastName, String identificador) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.identificador = identificador;
     }
 
     public int getId() {
@@ -35,11 +42,11 @@ public class Worker {
         this.lastName = lastName;
     }
 
-    public String getCnpj() {
-        return cnpj;
+    public String getIdentificador() {
+        return identificador;
     }
 
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
     }
 }
