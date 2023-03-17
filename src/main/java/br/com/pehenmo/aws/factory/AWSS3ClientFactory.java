@@ -17,7 +17,8 @@ public class AWSS3ClientFactory {
 
 
     public S3Client generate(){
-        return S3Client.builder().region(region.getRegion()).credentialsProvider(provider).build();
+        return S3Client.builder().region(region.getRegion())
+                .credentialsProvider(provider).build();
     }
 
 }

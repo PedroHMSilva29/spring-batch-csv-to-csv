@@ -14,12 +14,10 @@ public class WriteBucketS3 {
         try {
             PutObjectRequest objectRequest = PutObjectRequest.builder().key(keyName).bucket(bucketName).build();
             RequestBody requestBody = RequestBody.fromFile(new File(path));
-            s3.putObject(objectRequest, requestBody);
+            //PutObjectResponse response = s3.putObject(objectRequest, requestBody);
 
         } catch (S3Exception e) {
             System.err.println(e.awsErrorDetails());
-            System.exit(1);
-
         }
     }
 }

@@ -19,24 +19,11 @@ import org.springframework.scheduling.annotation.Scheduled;
 @EnableScheduling
 public class SpringBatchCsvToCsvApplication {
 
-	@Autowired
-	JobLauncher jobLauncher;
-
-	@Autowired
-	Job job;
-
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBatchCsvToCsvApplication.class, args);
 		//https://docs.spring.io/spring-batch/docs/current/reference/html/processor.html#filteringRecords
 	}
 
-	@Scheduled(cron = "*/10 * * * * *")
-	public void perform() throws Exception
-	{
-		JobParameters params = new JobParametersBuilder()
-				.addString("JobID", String.valueOf(System.currentTimeMillis()))
-				.toJobParameters();
-		jobLauncher.run(job, params);
-	}
+
 
 }
