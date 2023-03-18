@@ -1,6 +1,6 @@
 package br.com.pehenmo.batch.reader;
 
-import br.com.pehenmo.batch.entity.Worker;
+import br.com.pehenmo.batch.Worker;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.item.file.LineMapper;
 import org.springframework.batch.item.file.builder.FlatFileItemReaderBuilder;

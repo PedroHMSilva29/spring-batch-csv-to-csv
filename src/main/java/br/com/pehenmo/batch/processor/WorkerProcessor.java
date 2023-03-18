@@ -1,8 +1,7 @@
 package br.com.pehenmo.batch.processor;
 
-import br.com.pehenmo.batch.entity.ResultCSV;
-import br.com.pehenmo.batch.entity.Student;
-import br.com.pehenmo.batch.entity.Worker;
+import br.com.pehenmo.batch.ResultCSV;
+import br.com.pehenmo.batch.Worker;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 

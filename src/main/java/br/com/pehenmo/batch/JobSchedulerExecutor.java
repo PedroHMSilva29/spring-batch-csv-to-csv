@@ -17,7 +17,7 @@ public class JobSchedulerExecutor {
     @Autowired
     Job job;
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/40 * * * * *")
     public void perform() throws Exception
     {
         JobParameters params = new JobParametersBuilder()

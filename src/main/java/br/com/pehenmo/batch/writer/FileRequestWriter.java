@@ -1,7 +1,6 @@
 package br.com.pehenmo.batch.writer;
 
-import br.com.pehenmo.batch.entity.ResultCSV;
-import br.com.pehenmo.batch.entity.Student;
+import br.com.pehenmo.batch.ResultCSV;
 import org.springframework.batch.item.file.FlatFileItemWriter;
 import org.springframework.batch.item.file.builder.FlatFileItemWriterBuilder;
 import org.springframework.batch.item.file.transform.BeanWrapperFieldExtractor;

@@ -1,4 +1,4 @@
-package br.com.pehenmo.batch.entity;
+package br.com.pehenmo.batch;
 
 public class Student {
 

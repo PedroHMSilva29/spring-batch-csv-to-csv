@@ -1,28 +1,37 @@
-package br.com.pehenmo.batch.entity;
+package br.com.pehenmo.postgres.entity;
 
-public class ResultCSV {
+import javax.persistence.*;
+import java.io.Serializable;
 
-    private int id;
+@Entity
+@Table(name = "studant")
+public class StudanteEntity implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
+
     private String firstName;
     private String lastName;
     private String identificador;
 
-    public static String[] filds(){
-        return new String[] {"id", "firstName", "lastName", "identificador"};
+    public StudanteEntity() {
     }
 
-    public ResultCSV(int id, String firstName, String lastName, String identificador) {
+    public StudanteEntity(Integer id, String firstName, String lastName, String identificador) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.identificador = identificador;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
